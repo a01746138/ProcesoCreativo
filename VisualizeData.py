@@ -11,10 +11,13 @@ import pandas as pd
 # [Vbatt, Qbatt, Ndiff, Rwheel, MaxPmot, Mass, Hconsumed, Pmech]
 data, err, over = separate()
 
-f = pd.DataFrame(np.loadtxt('runs\\z_sms_lam0.0_exp0.txt', delimiter=','),
-                 columns=['Vbatt', 'Qbatt', 'Ndiff',
-                          'Rwheel', 'MaxPmot', 'Mass',
-                          'Hcons', 'Pmech'])
+# Extract dataset results from EMOA implementation
+# -----------------------------------------
+# f = pd.DataFrame(np.loadtxt('', delimiter=','),
+#                  columns=['Vbatt', 'Qbatt', 'Ndiff',
+#                           'Rwheel', 'MaxPmot', 'Mass',
+#                           'Hcons', 'Pmech'])
+
 
 # Plot the objective space of the MATLAB's data
 # -----------------------------------------
@@ -48,7 +51,7 @@ f = pd.DataFrame(np.loadtxt('runs\\z_sms_lam0.0_exp0.txt', delimiter=','),
 # -----------------------------------------
 # sn.scatterplot(x=data['Hcons'],
 #                y=-data['Pmech'])
-sn.lineplot(x=f['Hcons'], y=f['Pmech'], color='r')
-plt.xlabel('Hydrogen consumption [kg]')
-plt.ylabel('Total mechanical power of the motor [kW]')
-plt.show()
+# sn.lineplot(x=f['Hcons'], y=f['Pmech'], color='r')
+# plt.xlabel('Hydrogen consumption [kg]')
+# plt.ylabel('Total mechanical power of the motor [kW]')
+# plt.show()

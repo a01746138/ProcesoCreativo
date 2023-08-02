@@ -11,12 +11,10 @@ from pymoo.algorithms.moo.sms import LeastHypervolumeContributionSurvival  # Sor
 from PMOP import MyPMOP
 
 
-# Actualization test
-
 n_slice = 1  # Number of slices of lambda: n_slices + 1 - Should be 10 or 11
 n_exp = 1  # Number of experiments - Should be 31 experiments
 n_pop = 300  # Number of individuals per population - Should be 300 ind
-n_gen = 100  # Number of generations - Should be around 3,000 generations
+n_gen = 10  # Number of generations - Should be around 3,000 generations
 
 
 algorithm = SMSEMOA(pop_size=n_pop,
@@ -45,7 +43,7 @@ for i in range(n_slice + 1):
             for m in range(2):
                 ind.append(res.F[k][m])
             front.append(ind)
-        np.savetxt(fname=f'runs\\sms_lam{lam}_exp{j}.txt',
+        np.savetxt(fname=f'runs\\sms_lam{lam}_ngen{n_gen}_exp{j}.txt',
                    X=np.array(front),
                    delimiter=',')
 

@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import joblib
 from pymoo.core.problem import ElementwiseProblem
 
@@ -10,12 +9,12 @@ class MyPMOP(ElementwiseProblem):
         super().__init__(n_var=5,
                          n_obj=2,
                          n_ieq_constr=0,
-                         xl=np.array([0, 0, 0, 0, 0]),
+                         xl=np.array([0.4879, 0, 0, 0, 0]),
                          xu=np.array([1, 1, 1, 1, 1]))
         self.lm = lambda_mass
 
     def _evaluate(self, x, out, *args, **kwargs):
-        path = 'C:\\Users\\luiz4\\PycharmProjects\\ProcesoCreativo\\surrogate\\'
+        path = 'surrogate\\'
 
         h_model = joblib.load(filename=path + 'ann_h_model.joblib',
                               mmap_mode='r')
