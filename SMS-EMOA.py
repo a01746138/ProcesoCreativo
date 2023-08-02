@@ -27,7 +27,7 @@ algorithm = SMSEMOA(pop_size=n_pop,
 
 
 for i in range(n_slice + 1):
-    lam = float(i/n_slice)
+    lam = float(i/2 * n_slice)
     for j in range(n_exp):
         res = minimize(problem=MyPMOP(lambda_mass=lam),
                        algorithm=algorithm,
