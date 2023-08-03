@@ -15,7 +15,7 @@ df = normalization(a)
 def create_model_svr(param_grid, x, y):
     base_estimator = SVR()
     sh = HalvingGridSearchCV(estimator=base_estimator, param_grid=param_grid,
-                             cv=10, max_resources=30,
+                             cv=10, max_resources=30, n_jobs=-1,
                              scoring='neg_mean_squared_error').fit(x, y)
     params = sh.best_params_
 
