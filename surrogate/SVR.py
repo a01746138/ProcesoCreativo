@@ -26,16 +26,16 @@ def grid_search_svr(x, y):
     np.random.seed(seeD)
     param_grid_svr = {'kernel': ['linear', 'rbf', 'sigmoid'],
                       'gamma': ['scale', 'auto'],
-                      'tol': np.random.uniform(1e-3, 1e-2, 30),
-                      'epsilon': np.random.uniform(1e-3, 1e-1, 30),
+                      'tol': np.random.uniform(1e-4, 1e-2, 40),
+                      'epsilon': np.random.uniform(1e-3, 1e-1, 40),
                       'C': [np.random.uniform(0, 1)]}
     svr_model, params_svr = create_model_svr(param_grid=param_grid_svr, x=x, y=y)
 
     return svr_model, params_svr
 
 
-svr_h_model, params_svr_h = grid_search_svr(x=df.drop([6, 7], axis=1), y=df[6])
-svr_mech_model, params_svr_mech = grid_search_svr(x=df.drop([6, 7], axis=1), y=df[7])
+svr_h_model, params_svr_h = grid_search_svr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Hcons'])
+svr_mech_model, params_svr_mech = grid_search_svr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Pmech'])
 
 joblib.dump(filename=path + 'svr_h_model.joblib', value=svr_h_model)
 joblib.dump(filename=path + 'svr_mech_model.joblib', value=svr_mech_model)

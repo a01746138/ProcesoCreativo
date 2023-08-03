@@ -14,7 +14,10 @@ for file in folder:
                                   'Rwheel', 'MaxPmot', 'Mass',
                                   'Hcons', 'Pmech'])
         for col in f.columns:
-            f[col] = f[col] * (a[col].max() - a[col].min()) + a[col].min()
+            if col == 'Pmech':
+                f[col] = -f[col] * (a[col].max() - a[col].min()) + a[col].min()
+            else:
+                f[col] = f[col] * (a[col].max() - a[col].min()) + a[col].min()
 
         np.savetxt(fname=f'runs\\z_{file}',
                    X=np.array(np.array(f)),

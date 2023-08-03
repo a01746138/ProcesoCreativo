@@ -10,7 +10,11 @@ from ReadExperiments import separate
 
 def normalization(data):
     scaler = MinMaxScaler()
-    data_norm = pd.DataFrame(scaler.fit_transform(data))
+    data_norm = pd.DataFrame(scaler.fit_transform(data),
+                             columns=['Vbatt', 'Qbatt', 'Ndiff',
+                                      'Rwheel', 'MaxPmot', 'Mass',
+                                      'Hcons', 'Pmech']
+                             )
     return data_norm
 
 

@@ -12,12 +12,12 @@ from ReadExperiments import separate
 
 def x_validate(model, data, flag):
     if flag:
-        x_val = cross_validate(estimator=model, X=data.drop([6, 7], axis=1),
-                               y=data[6], cv=10, n_jobs=-1,
+        x_val = cross_validate(estimator=model, X=data.drop(['Hcons', 'Pmech'], axis=1),
+                               y=data['Hcons'], cv=10, n_jobs=-1,
                                scoring='neg_mean_squared_error')
     else:
-        x_val = cross_validate(estimator=model, X=data.drop([6, 7], axis=1),
-                               y=data[7], cv=10, n_jobs=-1,
+        x_val = cross_validate(estimator=model, X=data.drop(['Hcons', 'Pmech'], axis=1),
+                               y=data['Pmech'], cv=10, n_jobs=-1,
                                scoring='neg_mean_squared_error')
     return x_val
 
@@ -56,10 +56,14 @@ rfr_h_model = joblib.load(filename=path + 'rfr_h_model.joblib',
 rfr_mech_model = joblib.load(filename=path + 'rfr_mech_model.joblib',
                              mmap_mode='r')
 
-models_lbl = ['ann_h', 'ann_mech', 'svr_h', 'svr_mech',
-              'dtr_h', 'dtr_mech', 'rfr_h', 'rfr_mech']
-models = [ann_h_model, ann_mech_model, svr_h_model, svr_mech_model,
-          dtr_h_model, dtr_mech_model, rfr_h_model, rfr_mech_model]
+models_lbl = ['ann_h', 'ann_mech',
+              'svr_h', 'svr_mech',
+              'dtr_h', 'dtr_mech',
+              'rfr_h', 'rfr_mech']
+models = [ann_h_model, ann_mech_model,
+          svr_h_model, svr_mech_model,
+          dtr_h_model, dtr_mech_model,
+          rfr_h_model, rfr_mech_model]
 
 cv_results = np.array(df_create(model_set=models, labels=models_lbl), dtype='float')
 

@@ -8,13 +8,15 @@ import pandas as pd
 
 
 def join():
-    folder = os.listdir('experiments\\')
+    path = 'C:\\Users\\luiz4\\PycharmProjects\\ProcesoCreativo\\'
+    folder = os.listdir(path + 'experiments\\')
     pop = []
 
     for file in folder:
-        f = np.loadtxt('experiments\\' + file, delimiter=',')
-        for ind in f:
-            pop.append(ind)
+        if file[0:2] == 'id':
+            f = np.loadtxt(path + 'experiments\\' + file, delimiter=',')
+            for ind in f:
+                pop.append(ind)
     pop = np.array(pop)
 
     # print(f'({len(pop)},{len(pop[0])})')
@@ -26,8 +28,8 @@ def join():
 
 def separate():
     pop = join()
-    data = pop[(pop['Hcons'] != 0) & (pop['Hcons'] != 1)]
-    err = pop[(pop['Hcons'] == 0)]
-    over = pop[(pop['Hcons'] == 1)]
+    data = pop[(pop['Hcons'] != 0) & (pop['Hcons'] != 1)].reset_index(drop=True)
+    err = pop[(pop['Hcons'] == 0)].reset_index(drop=True)
+    over = pop[(pop['Hcons'] == 1)].reset_index(drop=True)
 
     return data, err, over

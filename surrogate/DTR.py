@@ -15,7 +15,7 @@ df = normalization(a)
 def create_model_dtr(param_grid, x, y):
     base_estimator = DecisionTreeRegressor()
     sh = HalvingGridSearchCV(estimator=base_estimator, param_grid=param_grid,
-                             cv=10, factor=2, max_resources=100,
+                             cv=10, factor=2, max_resources=100, n_jobs=-1,
                              scoring='neg_mean_squared_error').fit(x, y)
     params = sh.best_params_
 
@@ -35,8 +35,8 @@ def grid_search_dtr(x, y):
     return dt_model, params_dt
 
 
-dtr_h_model, params_dt_h = grid_search_dtr(x=df.drop([6, 7], axis=1), y=df[6])
-dtr_mech_model, params_dt_mech = grid_search_dtr(x=df.drop([6, 7], axis=1), y=df[7])
+dtr_h_model, params_dt_h = grid_search_dtr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Hcons'])
+dtr_mech_model, params_dt_mech = grid_search_dtr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Pmech'])
 
 joblib.dump(filename=path + 'dtr_h_model.joblib', value=dtr_h_model)
 joblib.dump(filename=path + 'dtr_mech_model.joblib', value=dtr_mech_model)
