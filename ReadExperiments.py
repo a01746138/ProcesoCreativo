@@ -1,6 +1,6 @@
 # Create three identified matrices of the experiments
 # results performed in MATLAB
-# ==========================================================
+# =========================================================
 
 import numpy as np
 import os
