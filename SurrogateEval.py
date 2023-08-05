@@ -11,9 +11,9 @@ f = normalization(a)
 
 df = np.array(f.drop(['Hcons', 'Pmech'], axis=1))
 
-h_model = joblib.load(filename='surrogate\\' + 'ann_h_model.joblib',
+h_model = joblib.load(filename='surrogate\\' + 'dtr_h_model.joblib',
                       mmap_mode='r')
-mech_model = joblib.load(filename='surrogate\\' + 'svr_mech_model.joblib',
+mech_model = joblib.load(filename='surrogate\\' + 'dtr_mech_model.joblib',
                          mmap_mode='r')
 
 m = []

@@ -27,16 +27,18 @@ def grid_search_dtr(x, y):
     param_grid_dt = {'criterion': ['squared_error', 'friedman_mse',
                                    'absolute_error', 'poisson'],
                      'splitter': ['best', 'random'],
-                     'max_depth': np.random.randint(1, 1000, 20),
-                     'ccp_alpha': np.random.uniform(0, 0.035, 20),
+                     'max_depth': np.random.randint(1, 1000, 10),
+                     'ccp_alpha': np.random.uniform(0, 0.035, 10),
                      'min_samples_split': [2, 3]}
     dt_model, params_dt = create_model_dtr(param_grid=param_grid_dt, x=x, y=y)
 
     return dt_model, params_dt
 
 
-dtr_h_model, params_dt_h = grid_search_dtr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Hcons'])
-dtr_mech_model, params_dt_mech = grid_search_dtr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Pmech'])
+dtr_h_model, params_dtr_h = grid_search_dtr(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Hcons']))
+dtr_mech_model, params_dtr_mech = grid_search_dtr(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Pmech']))
 
 joblib.dump(filename=path + 'dtr_h_model.joblib', value=dtr_h_model)
+joblib.dump(filename=path + 'dtr_h_params.joblib', value=params_dtr_h)
 joblib.dump(filename=path + 'dtr_mech_model.joblib', value=dtr_mech_model)
+joblib.dump(filename=path + 'dtr_mech_params.joblib', value=params_dtr_mech)

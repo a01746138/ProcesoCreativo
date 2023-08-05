@@ -11,7 +11,7 @@ from pymoo.algorithms.moo.sms import LeastHypervolumeContributionSurvival  # Sor
 from PMOP import MyPMOP
 
 
-n_slice = 1  # Number of slices of lambda: n_slices + 1 - Should be 10 or 11
+n_slice = 0  # Number of slices of lambda: n_slices + 1 - Should be 10 or 11
 n_exp = 1  # Number of experiments - Should be 31 experiments
 n_pop = 300  # Number of individuals per population - Should be 300 ind
 n_gen = 10  # Number of generations - Should be around 3,000 generations
@@ -27,7 +27,7 @@ algorithm = SMSEMOA(pop_size=n_pop,
 
 
 for i in range(n_slice + 1):
-    lam = float(i/n_slice)
+    lam = float(i/1)
     for j in range(n_exp):
         res = minimize(problem=MyPMOP(lambda_mass=lam),
                        algorithm=algorithm,

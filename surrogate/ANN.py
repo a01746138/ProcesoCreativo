@@ -14,12 +14,12 @@ df = normalization(a)
 
 def hidden_layer():
     np.random.seed(seeD)
-    layers = np.random.randint(5, 15, 10)
+    layers = np.random.randint(4, 10, 10)
     lista = []
     for lay in layers:
         tup_n = []
         for i in range(lay + 1):
-            node = np.random.randint(8, 12)
+            node = np.random.randint(4, 12)
             tup_n.append(node)
         lista.append(tuple(tup_n))
 
@@ -41,8 +41,8 @@ def grid_search_ann(x, y):
     param_grid_ann = {'activation': ['identity', 'logistic', 'tanh', 'relu'],
                       'learning_rate': ['constant', 'invscaling'],
                       'hidden_layer_sizes': hidden_layer(),
-                      'learning_rate_init': np.random.uniform(0, 0.01, 10),
-                      'alpha': np.random.uniform(0, 0.001, 10)}
+                      'learning_rate_init': np.random.uniform(0, 0.1, 10),
+                      'alpha': np.random.uniform(0, 0.01, 10)}
     ann_model, params_ann = create_model_ann(param_grid=param_grid_ann, x=x, y=y)
 
     return ann_model, params_ann
@@ -52,4 +52,6 @@ ann_h_model, params_ann_h = grid_search_ann(x=df.drop(['Hcons', 'Pmech'], axis=1
 ann_mech_model, params_ann_mech = grid_search_ann(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Pmech'])
 
 joblib.dump(filename=path + 'ann_h_model.joblib', value=ann_h_model)
+joblib.dump(filename=path + 'ann_h_params.joblib', value=params_ann_h)
 joblib.dump(filename=path + 'ann_mech_model.joblib', value=ann_mech_model)
+joblib.dump(filename=path + 'ann_mech_params.joblib', value=params_ann_mech)

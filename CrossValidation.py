@@ -1,5 +1,5 @@
 # Perform a cross validation study for each one of the surrogate models
-# in the /surrogate\\ directory
+# in the surrogate\\ directory
 # ==========================================================
 
 import pandas as pd
