@@ -26,9 +26,9 @@ def grid_search_svr(x, y):
     np.random.seed(seeD)
     param_grid_svr = {'kernel': ['linear', 'rbf', 'sigmoid'],
                       'gamma': ['scale', 'auto'],
-                      'tol': np.random.uniform(1e-4, 1e-2, 20),
-                      'epsilon': np.random.uniform(1e-3, 1e-1, 20),
-                      'C': np.random.uniform(0, 1, 10)}
+                      'tol': np.random.uniform(1e-4, 1e-2, 25),
+                      'epsilon': np.random.uniform(1e-3, 1e-1, 25),
+                      'C': np.random.uniform(0, 1, 12)}
     svr_model, params_svr = create_model_svr(param_grid=param_grid_svr, x=x, y=y)
 
     return svr_model, params_svr

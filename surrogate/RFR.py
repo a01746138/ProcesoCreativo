@@ -25,9 +25,9 @@ def create_model_rfr(param_grid, x, y):
 def grid_search_rfr(x, y):
     np.random.seed(seeD)
     param_grid_rfr = {'criterion': ['squared_error', 'absolute_error', 'poisson'],
-                      'n_estimators': np.random.randint(1, 100, 10),
-                      'max_depth': np.random.randint(1, 100, 10),
-                      'ccp_alpha': np.random.uniform(0, 0.035, 10)}
+                      'n_estimators': np.random.randint(1, 150, 12),
+                      'max_depth': np.random.randint(1, 100, 12),
+                      'ccp_alpha': np.random.uniform(0, 0.035, 12)}
     rfr_model, params_rfr = create_model_rfr(param_grid=param_grid_rfr, x=x, y=y)
 
     return rfr_model, params_rfr

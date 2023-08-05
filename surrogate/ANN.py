@@ -14,7 +14,7 @@ df = normalization(a)
 
 def hidden_layer():
     np.random.seed(seeD)
-    layers = np.random.randint(4, 10, 10)
+    layers = np.random.randint(4, 12, 10)
     lista = []
     for lay in layers:
         tup_n = []

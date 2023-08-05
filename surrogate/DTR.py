@@ -27,9 +27,9 @@ def grid_search_dtr(x, y):
     param_grid_dt = {'criterion': ['squared_error', 'friedman_mse',
                                    'absolute_error', 'poisson'],
                      'splitter': ['best', 'random'],
-                     'max_depth': np.random.randint(1, 1000, 10),
-                     'ccp_alpha': np.random.uniform(0, 0.035, 10),
-                     'min_samples_split': [2, 3]}
+                     'max_depth': np.random.randint(1, 1000, 30),
+                     'ccp_alpha': np.random.uniform(0, 0.035, 30),
+                     'min_samples_split': [2, 3, 4]}
     dt_model, params_dt = create_model_dtr(param_grid=param_grid_dt, x=x, y=y)
 
     return dt_model, params_dt
