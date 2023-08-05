@@ -48,8 +48,8 @@ def grid_search_ann(x, y):
     return ann_model, params_ann
 
 
-ann_h_model, params_ann_h = grid_search_ann(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Hcons'])
-ann_mech_model, params_ann_mech = grid_search_ann(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Pmech'])
+ann_h_model, params_ann_h = grid_search_ann(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Hcons']))
+ann_mech_model, params_ann_mech = grid_search_ann(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Pmech']))
 
 joblib.dump(filename=path + 'ann_h_model.joblib', value=ann_h_model)
 joblib.dump(filename=path + 'ann_h_params.joblib', value=params_ann_h)
