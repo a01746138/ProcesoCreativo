@@ -34,8 +34,10 @@ def grid_search_svr(x, y):
     return svr_model, params_svr
 
 
-svr_h_model, params_svr_h = grid_search_svr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Hcons'])
-svr_mech_model, params_svr_mech = grid_search_svr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Pmech'])
+svr_h_model, params_svr_h = grid_search_svr(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Hcons']))
+svr_mech_model, params_svr_mech = grid_search_svr(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Pmech']))
 
 joblib.dump(filename=path + 'svr_h_model.joblib', value=svr_h_model)
+joblib.dump(filename=path + 'svr_h_params.joblib', value=params_svr_h)
 joblib.dump(filename=path + 'svr_mech_model.joblib', value=svr_mech_model)
+joblib.dump(filename=path + 'svr_mech_params.joblib', value=params_svr_mech)

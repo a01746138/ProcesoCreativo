@@ -14,7 +14,7 @@ class MyPMOP(ElementwiseProblem):
         self.lm = lambda_mass
 
     def _evaluate(self, x, out, *args, **kwargs):
-        path = 'C:\\Users\\luiz4\\PycharmProjects\\ProcesoCreativo\\surrogate\\'
+        path = 'surrogate\\'
 
         h_model = joblib.load(filename=path + 'ann_h_model.joblib',
                               mmap_mode='r')

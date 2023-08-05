@@ -52,7 +52,7 @@ class RunAlgorithm:
         else:
             seed = 1827
 
-        res = minimize(problem=MyPMOP(lambda_mass=lamb, elementwise_runner=self.runner),
+        res = minimize(problem=MyPMOP(lambda_mass=lamb),
                        algorithm=self.algorithm,
                        termination=('n_gen', gen),
                        seed=seed,

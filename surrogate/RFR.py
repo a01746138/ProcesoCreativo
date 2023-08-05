@@ -33,8 +33,10 @@ def grid_search_rfr(x, y):
     return rfr_model, params_rfr
 
 
-rfr_h_model, params_rfr_h = grid_search_rfr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Hcons'])
-rfr_mech_model, params_rfr_mech = grid_search_rfr(x=df.drop(['Hcons', 'Pmech'], axis=1), y=df['Pmech'])
+rfr_h_model, params_rfr_h = grid_search_rfr(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Hcons']))
+rfr_mech_model, params_rfr_mech = grid_search_rfr(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Pmech']))
 
 joblib.dump(filename=path + 'rfr_h_model.joblib', value=rfr_h_model)
+joblib.dump(filename=path + 'rfr_h_params.joblib', value=params_rfr_h)
 joblib.dump(filename=path + 'rfr_mech_model.joblib', value=rfr_mech_model)
+joblib.dump(filename=path + 'rfr_mech_params.joblib', value=params_rfr_mech)
