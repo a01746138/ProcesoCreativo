@@ -1,6 +1,4 @@
 import numpy as np
-import multiprocessing
-from pymoo.core.problem import StarmapParallelization
 from pymoo.algorithms.moo.sms import SMSEMOA
 from pymoo.optimize import minimize
 from pymoo.operators.sampling.rnd import FloatRandomSampling  # Sampling
