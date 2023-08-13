@@ -33,3 +33,11 @@ def separate():
     over = pop[(pop['Hcons'] == 1)].reset_index(drop=True)
 
     return data, err, over
+
+
+def save_csv():
+    # Create the Data.csv file
+    a, b, c = separate()
+    # a.to_csv(path_or_buf='Data.csv', index=False)
+    print(a.shape)
+

@@ -44,3 +44,13 @@ def read_file(train_sz):
     data_mech_test = pd.concat([x_mech_test, y_mech_test], axis=1, join='inner', ignore_index=True)
 
     return data_h_train, data_h_test, data_mech_train, data_mech_test
+
+
+def decode(df):
+    a, b, c = separate()
+    for col in df.columns:
+        if col == 'Pmech':
+            df[col] = -df[col] * (a[col].max() - a[col].min()) + a[col].min()
+        else:
+            df[col] = df[col] * (a[col].max() - a[col].min()) + a[col].min()
+    return df
