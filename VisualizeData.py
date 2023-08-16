@@ -11,13 +11,6 @@ import pandas as pd
 # [Vbatt, Qbatt, Ndiff, Rwheel, MaxPmot, Mass, Hconsumed, Pmech]
 data, err, over = separate()
 
-# Extract dataset results from EMOA implementation
-# -----------------------------------------
-f = pd.DataFrame(np.loadtxt('runs\\' + 'z_sms_lam0.0_ngen3000_exp0.txt', delimiter=','),
-                 columns=['Vbatt', 'Qbatt', 'Ndiff',
-                          'Rwheel', 'MaxPmot', 'Mass',
-                          'Hcons', 'Pmech'])
-
 # Plot the objective space of the MATLAB's data
 # -----------------------------------------
 # sn.scatterplot(x=data['Hcons'],
@@ -48,10 +41,20 @@ f = pd.DataFrame(np.loadtxt('runs\\' + 'z_sms_lam0.0_ngen3000_exp0.txt', delimit
 
 
 # -----------------------------------------
-sn.scatterplot(x=data['Hcons'][data['Mass'] < 1650],
-           y=-data['Pmech'][data['Mass'] < 1650])
-sn.lineplot(x=f['Hcons'], y=-f['Pmech'], color='r')
+# sn.scatterplot(x=data['Hcons'][data['Mass'] < 1650],
+#            y=-data['Pmech'][data['Mass'] < 1650])
+# sn.lineplot(x=f['Hcons'], y=-f['Pmech'], color='r')
+# plt.xlabel('Hydrogen consumption [kg]')
+# plt.ylabel('Total mechanical power of the motor [kW]')
+# plt.title(r'Range of vehicle mass $<1650$ [kg]')
+# plt.show()
+
+sn.displot(x=data['Hcons'])
 plt.xlabel('Hydrogen consumption [kg]')
-plt.ylabel('Total mechanical power of the motor [kW]')
-plt.title(r'Range of vehicle mass $<1650$ [kg]')
+plt.ylabel('Count')
+plt.show()
+
+sn.displot(x=data['Pmech'])
+plt.xlabel('Total mechanical power of the motor [kW]')
+plt.ylabel('Count')
 plt.show()

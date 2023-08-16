@@ -14,8 +14,12 @@ df = normalization(a)
 
 def create_model_rfr(param_grid, x, y):
     base_estimator = RandomForestRegressor()
-    sh = HalvingGridSearchCV(estimator=base_estimator, param_grid=param_grid,
-                             cv=10, factor=2, max_resources=100, n_jobs=-1,
+    sh = HalvingGridSearchCV(estimator=base_estimator,
+                             param_grid=param_grid,
+                             cv=5, factor=2, n_jobs=-1,
+                             max_resources=250,
+                             min_resources='exhaust',
+                             aggressive_elimination=True,
                              scoring='neg_mean_squared_error').fit(x, y)
     params = sh.best_params_
 
@@ -25,9 +29,9 @@ def create_model_rfr(param_grid, x, y):
 def grid_search_rfr(x, y):
     np.random.seed(seeD)
     param_grid_rfr = {'criterion': ['squared_error', 'absolute_error', 'poisson'],
-                      'n_estimators': np.random.randint(1, 150, 12),
-                      'max_depth': np.random.randint(1, 100, 12),
-                      'ccp_alpha': np.random.uniform(0, 0.035, 12)}
+                      'n_estimators': np.random.randint(1, 10, 20),
+                      'max_depth': np.random.randint(800, 1500, 20),
+                      'min_samples_split': [2, 3, 4]}
     rfr_model, params_rfr = create_model_rfr(param_grid=param_grid_rfr, x=x, y=y)
 
     return rfr_model, params_rfr

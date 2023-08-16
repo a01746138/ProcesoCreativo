@@ -14,8 +14,12 @@ df = normalization(a)
 
 def create_model_dtr(param_grid, x, y):
     base_estimator = DecisionTreeRegressor()
-    sh = HalvingGridSearchCV(estimator=base_estimator, param_grid=param_grid,
-                             cv=10, factor=2, max_resources=100, n_jobs=-1,
+    sh = HalvingGridSearchCV(estimator=base_estimator,
+                             param_grid=param_grid,
+                             cv=5, factor=2, n_jobs=-1,
+                             max_resources=250,
+                             min_resources='exhaust',
+                             aggressive_elimination=True,
                              scoring='neg_mean_squared_error').fit(x, y)
     params = sh.best_params_
 
@@ -27,8 +31,7 @@ def grid_search_dtr(x, y):
     param_grid_dt = {'criterion': ['squared_error', 'friedman_mse',
                                    'absolute_error', 'poisson'],
                      'splitter': ['best', 'random'],
-                     'max_depth': np.random.randint(1, 1000, 30),
-                     'ccp_alpha': np.random.uniform(0, 0.035, 30),
+                     'max_depth': np.random.randint(800, 2000, 100),
                      'min_samples_split': [2, 3, 4]}
     dt_model, params_dt = create_model_dtr(param_grid=param_grid_dt, x=x, y=y)
 

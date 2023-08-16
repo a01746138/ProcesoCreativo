@@ -13,22 +13,23 @@ df = normalization(a)
 
 
 def create_model_svr(param_grid, x, y):
-    base_estimator = SVR()
-    sh = HalvingGridSearchCV(estimator=base_estimator, param_grid=param_grid,
-                             cv=10, max_resources=30, n_jobs=-1,
+    base_estimator = SVR(epsilon=1e-3,
+                         tol=1e-6,
+                         kernel='rbf',
+                         shrinking=True)
+    sh = HalvingGridSearchCV(estimator=base_estimator,
+                             param_grid=param_grid,
+                             cv=5, factor=2, n_jobs=-1,
+                             min_resources='exhaust',
+                             aggressive_elimination=True,
                              scoring='neg_mean_squared_error').fit(x, y)
-    params = sh.best_params_
 
-    return sh.best_estimator_, params
+    return sh.best_estimator_, sh.best_params_
 
 
 def grid_search_svr(x, y):
     np.random.seed(seeD)
-    param_grid_svr = {'kernel': ['linear', 'rbf', 'sigmoid'],
-                      'gamma': ['scale', 'auto'],
-                      'tol': np.random.uniform(1e-4, 1e-2, 25),
-                      'epsilon': np.random.uniform(1e-3, 1e-1, 25),
-                      'C': np.random.uniform(0, 1, 12)}
+    param_grid_svr = {'C': np.random.uniform(0.9, 1, 10)}
     svr_model, params_svr = create_model_svr(param_grid=param_grid_svr, x=x, y=y)
 
     return svr_model, params_svr

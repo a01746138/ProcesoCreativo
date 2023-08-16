@@ -49,8 +49,10 @@ def read_file(train_sz):
 def decode(df):
     a, b, c = separate()
     for col in df.columns:
-        if col == 'Pmech':
-            df[col] = -df[col] * (a[col].max() - a[col].min()) + a[col].min()
+        if col in ['Hcons_ann', 'Hcons_svr', 'Hcons_dtr', 'Hcons_rfr']:
+            df[col] = df[col] * (a['Hcons'].max() - a['Hcons'].min()) + a['Hcons'].min()
+        elif col in ['Pmech_ann', 'Pmech_svr', 'Pmech_dtr', 'Pmech_rfr']:
+            df[col] = df[col] * (a['Pmech'].max() - a['Pmech'].min()) + a['Pmech'].min()
         else:
             df[col] = df[col] * (a[col].max() - a[col].min()) + a[col].min()
     return df
