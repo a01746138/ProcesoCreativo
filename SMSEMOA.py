@@ -123,7 +123,7 @@ class SMSEMOA:
         if len(fronts['F1']) > self.pop_size:
             fronts['F1'] = range(100)
 
-        # TODO: Regresar el valor del hypervolumen de los nds
+        # TODO: Return the value of hypervolume from the nds
         return n_pop, fronts['F1']
 
     def _new_individual(self, pop):
@@ -182,7 +182,7 @@ class SMSEMOA:
                     print('    n_gen    |    n_evaluations    |    nds    |    hv   ')
                     print('=========================================================')
                 if c % 100 == 0:
-                    # TODO: Utilizar logaritmo base 10 para ver lo de los espacios
+                    # TODO: Use the logarithm base 10 to adequate the spaces
                     print(f'   {c}|{n_eval}|{len(nds)}|0')
 
         return pop, nds
