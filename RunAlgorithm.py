@@ -7,7 +7,7 @@ from pymoo.operators.crossover.sbx import SBX  # Crossover
 from pymoo.operators.mutation.pm import PM  # Mutation
 from pymoo.algorithms.moo.sms import cv_and_dom_tournament
 from pymoo.algorithms.moo.sms import LeastHypervolumeContributionSurvival  # Sorting
-from PMOP import MyPMOP
+from PMOP_pymoo import MyPMOP
 
 
 class RunAlgorithm:

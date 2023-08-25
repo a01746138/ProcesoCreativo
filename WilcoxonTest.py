@@ -1,3 +1,7 @@
+# This document performs the Wilcoxon test to calculate the
+# p-values between the evaluations of the surrogate models
+# with the MATLAB data
+# ==========================================================
 import pandas as pd
 import numpy as np
 import joblib

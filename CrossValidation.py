@@ -1,10 +1,12 @@
-# Perform a cross validation study for each one of the surrogate models
-# in the surrogate\\ directory
+# Perform a cross validation study for each one of the ML techniques
 # ==========================================================
 
 import pandas as pd
-import joblib
 import numpy as np
+from sklearn.neural_network import MLPRegressor
+from sklearn.svm import SVR
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import cross_validate
 from ProcessingData import normalization
 from ReadExperiments import separate
@@ -12,62 +14,44 @@ from ReadExperiments import separate
 
 def x_validate(model, data, flag):
     if flag:
-        x_val = cross_validate(estimator=model, X=data.drop(['Hcons', 'Pmech'], axis=1),
-                               y=data['Hcons'], cv=10, n_jobs=-1,
-                               scoring='neg_mean_squared_error')
+        x_val = cross_validate(estimator=model, X=np.array(data.drop(['Hcons', 'Pmech'], axis=1)),
+                               y=np.array(data['Hcons']), cv=10, n_jobs=-1,
+                               scoring='neg_mean_squared_error', return_estimator=True)
     else:
-        x_val = cross_validate(estimator=model, X=data.drop(['Hcons', 'Pmech'], axis=1),
-                               y=data['Pmech'], cv=10, n_jobs=-1,
-                               scoring='neg_mean_squared_error')
+        x_val = cross_validate(estimator=model, X=np.array(data.drop(['Hcons', 'Pmech'], axis=1)),
+                               y=np.array(data['Pmech']), cv=10, n_jobs=-1,
+                               scoring='neg_mean_squared_error', return_estimator=True)
     return x_val
 
 
-def df_create(model_set, labels):
-    i = 0
-    results = pd.DataFrame()
-    for m in model_set:
-        if i % 2 == 0:
-            r = x_validate(model=m, data=df, flag=True)
-        else:
-            r = x_validate(model=m, data=df, flag=False)
-        results[labels[i]] = r['test_score']
-        i += 1
-    return results
+def cv_table(models_set, labels, flag):
+    results = []
+    for m in models_set:
+        r = x_validate(model=m, data=df, flag=flag)
+        results.append(-r['test_score'])
+    return pd.DataFrame(np.array(results).T, columns=labels)
 
 
-path = 'C:\\Users\\luiz4\\PycharmProjects\\ProcesoCreativo\\surrogate\\'
 a, b, c = separate()
 df = normalization(a)
 
-ann_h_model = joblib.load(filename=path + 'ann_h_model.joblib',
-                          mmap_mode='r')
-ann_mech_model = joblib.load(filename=path + 'ann_mech_model.joblib',
-                             mmap_mode='r')
-svr_h_model = joblib.load(filename=path + 'svr_h_model.joblib',
-                          mmap_mode='r')
-svr_mech_model = joblib.load(filename=path + 'svr_mech_model.joblib',
-                             mmap_mode='r')
-dtr_h_model = joblib.load(filename=path + 'dtr_h_model.joblib',
-                          mmap_mode='r')
-dtr_mech_model = joblib.load(filename=path + 'dtr_mech_model.joblib',
-                             mmap_mode='r')
-rfr_h_model = joblib.load(filename=path + 'rfr_h_model.joblib',
-                          mmap_mode='r')
-rfr_mech_model = joblib.load(filename=path + 'rfr_mech_model.joblib',
-                             mmap_mode='r')
 
-models_lbl = ['ann_h', 'ann_mech',
-              'svr_h', 'svr_mech',
-              'dtr_h', 'dtr_mech',
-              'rfr_h', 'rfr_mech']
-models = [ann_h_model, ann_mech_model,
-          svr_h_model, svr_mech_model,
-          dtr_h_model, dtr_mech_model,
-          rfr_h_model, rfr_mech_model]
+ann_model = MLPRegressor(max_iter=5000, activation='logistic', learning_rate='adaptive', n_iter_no_change=30,
+                         hidden_layer_sizes=(256, 128), batch_size=400, learning_rate_init=0.01)
+svr_model = SVR(epsilon=0.05, tol=1e-4)
+dtr_model = DecisionTreeRegressor(min_samples_split=3)
+rfr_model = RandomForestRegressor(n_estimators=20, min_samples_split=3, n_jobs=-1)
 
-cv_results = np.array(df_create(model_set=models, labels=models_lbl), dtype='float')
+models = [ann_model, svr_model, dtr_model, rfr_model]
+h_models_lbl = ['Hcons_ann', 'Hcons_svr', 'Hcons_dtr', 'Hcons_rfr']
+mech_models_lbl = ['Pmech_ann', 'Pmech_svr', 'Pmech_dtr', 'Pmech_rfr']
 
-np.savetxt(fname='CrossValidation.txt', X=cv_results)
-print(cv_results)
+h_results = cv_table(models_set=models, labels=h_models_lbl, flag=True)
+mech_results = cv_table(models_set=models, labels=mech_models_lbl, flag=False)
 
+h_results.to_csv(path_or_buf='CV_Hcons.csv', index=False)
+mech_results.to_csv(path_or_buf='CV_Pmech.csv', index=False)
+
+print(h_results)
+print(mech_results)
 
