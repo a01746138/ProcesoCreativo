@@ -38,7 +38,7 @@ df = normalization(a)
 
 ann_model = MLPRegressor(max_iter=5000, activation='logistic', learning_rate='adaptive', n_iter_no_change=30,
                          hidden_layer_sizes=(256, 128), batch_size=400, learning_rate_init=0.01)
-svr_model = SVR(epsilon=0.05, tol=1e-4)
+svr_model = SVR(epsilon=0.01, tol=1e-5)
 dtr_model = DecisionTreeRegressor(min_samples_split=3)
 rfr_model = RandomForestRegressor(n_estimators=20, min_samples_split=3, n_jobs=-1)
 
@@ -54,4 +54,3 @@ mech_results.to_csv(path_or_buf='CV_Pmech.csv', index=False)
 
 print(h_results)
 print(mech_results)
-

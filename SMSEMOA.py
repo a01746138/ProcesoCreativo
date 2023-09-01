@@ -124,6 +124,7 @@ class SMSEMOA:
             fronts['F1'] = range(100)
 
         # TODO: Return the value of hypervolume from the nds
+
         return n_pop, fronts['F1']
 
     def _new_individual(self, pop):
@@ -165,7 +166,6 @@ class SMSEMOA:
 
         # Initialize population
         pop, n_eval = self._initialize_pop()
-        nds = None
 
         # Run until the termination condition is fulfilled
         while c < self.n_gen:
@@ -179,13 +179,15 @@ class SMSEMOA:
 
             if self.verbose:
                 if c == 1:
-                    print('    n_gen    |    n_evaluations    |    nds    |    hv   ')
-                    print('=========================================================')
+                    print('     n_gen     | n_evaluations |      nds      ')
+                    print('===============================================')
                 if c % 100 == 0:
-                    # TODO: Use the logarithm base 10 to adequate the spaces
-                    print(f'   {c}|{n_eval}|{len(nds)}|0')
+                    s1 = (9 - len(str(c))) * ' ' + str(c) + 6 * ' '
+                    s2 = (9 - len(str(n_eval))) * ' ' + str(n_eval) + 6 * ' '
+                    s3 = (9 - len(str(len(nds)))) * ' ' + str(len(nds)) + 6 * ' '
+                    print(s1 + '|' + s2 + '|' + s3)
 
-        return pop, nds
+        return pop
 
     def __call__(self):
         return self._do()

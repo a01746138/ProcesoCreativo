@@ -27,9 +27,9 @@ class MyPMOP:
     def evaluate(self, x):
         path = 'surrogate\\'
 
-        h_model = joblib.load(filename=path + 'dtr_h_model.joblib',
+        h_model = joblib.load(filename=path + 'ann_h_model.joblib',
                               mmap_mode='r')
-        mech_model = joblib.load(filename=path + 'dtr_mech_model.joblib',
+        mech_model = joblib.load(filename=path + 'svr_mech_model.joblib',
                                  mmap_mode='r')
 
         xx = np.reshape([x[0], x[1], x[2], x[3], x[4], self.lm], (1, -1))

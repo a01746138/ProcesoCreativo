@@ -43,10 +43,28 @@ class Hypervolume:
         return self._do(front)
 
 
+class RieszEnergy:
+
+    @staticmethod
+    def _do(front, constant):
+
+        res = 0
+        for i in range(len(front)):
+            a = front[i]
+            for b in np.delete(front, i, 0):
+                euc_dist = 1 / (np.sqrt(np.sum((a - b) ** 2)) ** (len(a) ** 2))
+                res += euc_dist * constant
+
+        return res
+
+    def __call__(self, front, constant=1e-10):
+        return self._do(front, constant)
+
+
 class IndividualContribution:
 
     @staticmethod
-    def _do(indicator, total_con, f, a, half=False):
+    def _do(indicator, total_con, f, a, half):
         # Eliminate index a from the front
         n_f = np.delete(arr=f, obj=a, axis=0)
         res = total_con - indicator(n_f)
@@ -57,8 +75,8 @@ class IndividualContribution:
         else:
             return res
 
-    def __call__(self, indicator, total_con, f, a):
-        return self._do(indicator, total_con, f, a)
+    def __call__(self, indicator, total_con, f, a, half=False):
+        return self._do(indicator, total_con, f, a, half)
 
 
 class EpsPlus:
@@ -108,23 +126,6 @@ class R2:
             res += val0
 
         return res[0][0] / len(self.weights)
-
-
-class RieszEnergy:
-
-    def __call__(self, F):
-        return self._do(F)
-
-    def _do(self, F):
-
-        res = 0
-        for i in range(len(F)):
-            a = F[i]
-            for b in np.delete(F, i, 0):
-                euc_dist = 1 / (np.sqrt(np.sum((a - b) ** 2)) ** (len(a) ** 2))
-                res += euc_dist
-
-        return res
 
 
 class DeltaP:

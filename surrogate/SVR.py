@@ -1,44 +1,18 @@
 import joblib
 import numpy as np
-from sklearn.experimental import enable_halving_search_cv
-from sklearn.model_selection import HalvingGridSearchCV
 from sklearn.svm import SVR
 from ProcessingData import normalization
 from ReadExperiments import separate
 
-seeD = 1827
-path = 'C:\\Users\\luiz4\\PycharmProjects\\ProcesoCreativo\\surrogate\\'
 a, b, c = separate()
 df = normalization(a)
 
 
-def create_model_svr(param_grid, x, y):
-    base_estimator = SVR(epsilon=1e-3,
-                         tol=1e-6,
-                         kernel='rbf',
-                         shrinking=True)
-    sh = HalvingGridSearchCV(estimator=base_estimator,
-                             param_grid=param_grid,
-                             cv=5, factor=2, n_jobs=-1,
-                             min_resources='exhaust',
-                             aggressive_elimination=True,
-                             scoring='neg_mean_squared_error').fit(x, y)
+svr_model = SVR(epsilon=0.01, tol=1e-5)
 
-    return sh.best_estimator_, sh.best_params_
+svr_h_model = svr_model.fit(X=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Hcons']))
+svr_mech_model = svr_model.fit(X=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Pmech']))
 
 
-def grid_search_svr(x, y):
-    np.random.seed(seeD)
-    param_grid_svr = {'C': np.random.uniform(0.9, 1, 10)}
-    svr_model, params_svr = create_model_svr(param_grid=param_grid_svr, x=x, y=y)
-
-    return svr_model, params_svr
-
-
-svr_h_model, params_svr_h = grid_search_svr(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Hcons']))
-svr_mech_model, params_svr_mech = grid_search_svr(x=np.array(df.drop(['Hcons', 'Pmech'], axis=1)), y=np.array(df['Pmech']))
-
-joblib.dump(filename=path + 'svr_h_model.joblib', value=svr_h_model)
-joblib.dump(filename=path + 'svr_h_params.joblib', value=params_svr_h)
-joblib.dump(filename=path + 'svr_mech_model.joblib', value=svr_mech_model)
-joblib.dump(filename=path + 'svr_mech_params.joblib', value=params_svr_mech)
+joblib.dump(filename='svr_h_model.joblib', value=svr_h_model)
+joblib.dump(filename='svr_mech_model.joblib', value=svr_mech_model)
