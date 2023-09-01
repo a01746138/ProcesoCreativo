@@ -123,8 +123,6 @@ class SMSEMOA:
         if len(fronts['F1']) > self.pop_size:
             fronts['F1'] = range(100)
 
-        # TODO: Return the value of hypervolume from the nds
-
         return n_pop, fronts['F1']
 
     def _new_individual(self, pop):
