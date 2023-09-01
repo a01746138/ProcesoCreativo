@@ -96,35 +96,6 @@ class SMSEMOA:
 
         return fronts
 
-    def _reduce(self, pop, q):
-        n_pop = {}
-
-        # Join the population and the new individual
-        for key in q.keys():
-            n_pop[key] = pop[key] + q[key]
-
-        # Fast-non-dominated sorting
-        fronts = self.fast_non_dominated_sorting(n_pop)
-
-        # Obtain the index of the element with the least contribution
-        if len(fronts) - 1 > 1:
-            f = fronts[f'F{len(fronts) - 1}']
-            if len(f) < 4:
-                r = np.random.choice(f)
-            else:
-                r = self.min_contribution(f, n_pop['F'])
-        else:
-            r = self.min_contribution(fronts['F1'], n_pop['F'])
-
-        # Eliminates the r element of the population
-        for key in n_pop.keys():
-            n_pop[key].pop(r)
-
-        if len(fronts['F1']) > self.pop_size:
-            fronts['F1'] = range(100)
-
-        return n_pop, fronts['F1']
-
     def _new_individual(self, pop):
 
         # Tournament Selection
@@ -159,8 +130,38 @@ class SMSEMOA:
 
         return {'X': x, 'F': x_f}, n_eval
 
+    def _reduce(self, pop, q):
+        n_pop = {}
+
+        # Join the population and the new individual
+        for key in q.keys():
+            n_pop[key] = pop[key] + q[key]
+
+        # Fast-non-dominated sorting
+        fronts = self.fast_non_dominated_sorting(n_pop)
+
+        # Obtain the index of the element with the least contribution
+        if len(fronts) - 1 > 1:
+            f = fronts[f'F{len(fronts) - 1}']
+            if len(f) < 4:
+                r = np.random.choice(f)
+            else:
+                r = self.min_contribution(f, n_pop['F'])
+        else:
+            r = self.min_contribution(fronts['F1'], n_pop['F'])
+
+        # Eliminates the r element of the population
+        for key in n_pop.keys():
+            n_pop[key].pop(r)
+
+        if len(fronts['F1']) > self.pop_size:
+            fronts['F1'] = range(self.pop_size)
+
+        return n_pop, fronts['F1']
+
     def _do(self):
         c = 0
+        nds_index = []
 
         # Initialize population
         pop, n_eval = self._initialize_pop()
@@ -170,7 +171,7 @@ class SMSEMOA:
             # Generate a new individual
             q = self._new_individual(pop)
             # Update the population and obtain the nds
-            pop, nds = self._reduce(pop, q)
+            pop, nds_index = self._reduce(pop, q)
 
             n_eval += 1
             c += 1
@@ -182,10 +183,14 @@ class SMSEMOA:
                 if c % 100 == 0:
                     s1 = (9 - len(str(c))) * ' ' + str(c) + 6 * ' '
                     s2 = (9 - len(str(n_eval))) * ' ' + str(n_eval) + 6 * ' '
-                    s3 = (9 - len(str(len(nds)))) * ' ' + str(len(nds)) + 6 * ' '
+                    s3 = (9 - len(str(len(nds_index)))) * ' ' + str(len(nds_index)) + 6 * ' '
                     print(s1 + '|' + s2 + '|' + s3)
 
-        return pop
+        nds = {}
+        for key in pop.keys():
+            nds[key] = [pop[key][index] for index in nds_index]
+
+        return pop, nds
 
     def __call__(self):
         return self._do()

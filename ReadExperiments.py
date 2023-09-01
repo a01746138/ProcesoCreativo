@@ -13,7 +13,7 @@ def join():
     pop = []
 
     for file in folder:
-        if file[0:2] == 'id':
+        if file[0:2] == 'id' or file[0:6] == 'lambda':
             f = np.loadtxt(path + 'experiments\\' + file, delimiter=',')
             for ind in f:
                 pop.append(ind)
@@ -38,6 +38,8 @@ def separate():
 def save_csv():
     # Create the Data.csv file
     a, b, c = separate()
-    # a.to_csv(path_or_buf='Data.csv', index=False)
+    a.to_csv(path_or_buf='Data.csv', index=False)
     print(a.shape)
 
+
+save_csv()

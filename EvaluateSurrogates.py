@@ -6,7 +6,8 @@ from ProcessingData import normalization, decode
 data = pd.read_csv(filepath_or_buffer='Data.csv')
 df = normalization(data)  # .drop(['Hcons', 'Pmech'], axis=1)
 
-data02 = pd.read_csv(filepath_or_buffer='Data02.csv')
+data02 = data
+# data02 = pd.read_csv(filepath_or_buffer='Data02.csv')
 
 ann_h = joblib.load(filename='surrogate\\ann_h_model.joblib',
                     mmap_mode='r')
@@ -25,13 +26,10 @@ rfr_h = joblib.load(filename='surrogate\\rfr_h_model.joblib',
 rfr_mech = joblib.load(filename='surrogate\\rfr_mech_model.joblib',
                        mmap_mode='r')
 
-# models = [ann_h, svr_h, dtr_h, rfr_h,
-#           ann_mech, svr_mech, dtr_mech, rfr_mech]
-# models_lbl = ['Hcons_ann', 'Hcons_svr', 'Hcons_dtr', 'Hcons_rfr',
-#               'Pmech_ann', 'Pmech_svr', 'Pmech_dtr', 'Pmech_rfr']
-
-models = [ann_h]
-models_lbl = ['Hcons_ann']
+models = [ann_h, svr_h, dtr_h, rfr_h,
+          ann_mech, svr_mech, dtr_mech, rfr_mech]
+models_lbl = ['Hcons_ann', 'Hcons_svr', 'Hcons_dtr', 'Hcons_rfr',
+              'Pmech_ann', 'Pmech_svr', 'Pmech_dtr', 'Pmech_rfr']
 
 
 c = 0
@@ -45,5 +43,5 @@ for m in models:
     data02[models_lbl[c]] = decode(pd.DataFrame(plist, columns=[models_lbl[c]]))
     c += 1
 
-# data02.to_csv(path_or_buf='Data02.csv', index=False)
+data02.to_csv(path_or_buf='Data02.csv', index=False)
 

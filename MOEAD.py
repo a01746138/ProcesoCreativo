@@ -148,18 +148,21 @@ class MOEAD:
         for key in pop.keys():
             front[key] = list(np.unique(pop[key], axis=0))
 
-        for i in front['F']:
+        for i in range(len(front['F'])):
+            p = front['F'][i]
             n = 0
-            for j in front['F']:
-                if self.dominate(j, i):
+            for j in range(len(front['F'])):
+                q = front['F'][j]
+                if self.dominate(q, p):
                     n += 1
             if n == 0:
                 nds.append(i)
 
-        return pop, nds
+        return pop, nds, utopian_point
 
     def _do(self):
         c = 0
+        nds_index = []
 
         # Initialize weights, neighborhoods, and population
         self.weights = self._weights_vector()
@@ -170,7 +173,7 @@ class MOEAD:
 
         # Run until the termination condition is fulfilled
         while c < self.n_gen:
-            pop, nds = self._update(utopian_point, pop)
+            pop, nds_index, utopian_point = self._update(utopian_point, pop)
 
             n_eval += self.pop_size
             c += 1
@@ -182,10 +185,14 @@ class MOEAD:
                 if c % 1 == 0:
                     s1 = (9 - len(str(c))) * ' ' + str(c) + 6 * ' '
                     s2 = (9 - len(str(n_eval))) * ' ' + str(n_eval) + 6 * ' '
-                    s3 = (9 - len(str(len(nds)))) * ' ' + str(len(nds)) + 6 * ' '
+                    s3 = (9 - len(str(len(nds_index)))) * ' ' + str(len(nds_index)) + 6 * ' '
                     print(s1 + '|' + s2 + '|' + s3)
 
-        return pop
+        nds = {}
+        for key in pop.keys():
+            nds[key] = [pop[key][index] for index in nds_index]
+
+        return pop, nds
 
     def __call__(self):
         return self._do()

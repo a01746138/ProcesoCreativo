@@ -1,26 +1,35 @@
 # from SMSEMOA import SMSEMOA
 # from PMOP import MyPMOP
+# from VisualizeFront import plot_front
 # import time
 #
 # start_time = time.time()
-# algorithm = SMSEMOA(n_gen=1000, problem=MyPMOP(lambda_mass=0.5), verbose=True)
+# algorithm = SMSEMOA(pop_size=300, n_gen=500, problem=MyPMOP(lambda_mass=0.0), verbose=True)
 #
-# pop = algorithm()
+# pop, nds = algorithm()
 #
 # print(f'Time: {time.time() - start_time}')
 #
-# print(pop['F'])
+# plot_front(nds['F'])
 
 # =============================================================
 # =============================================================
 
-from MOEAD import MOEAD
-from PMOP import MyPMOP
-import time
+# from MOEAD import MOEAD
+# from PMOP import MyPMOP
+# from VisualizeFront import plot_front
+# import time
+#
+# start_time = time.time()
+# algorithm = MOEAD(n_gen=10, problem=MyPMOP(lambda_mass=0.0), pop_size=101, verbose=True)
+#
+# pop, nds = algorithm()
+#
+# print(f'Time: {time.time() - start_time}')
+#
+# plot_front(nds['F'])
 
-start_time = time.time()
-algorithm = MOEAD(n_gen=100, problem=MyPMOP(lambda_mass=0.0), pop_size=101, verbose=True)
+# =============================================================
+# =============================================================
 
-pop = algorithm()
 
-print(f'Time: {time.time() - start_time}')
