@@ -4,6 +4,7 @@
 # import time
 #
 # start_time = time.time()
+import pandas as pd
 
 # n_gen = 40000
 # algorithm = SMSEMOA(pop_size=100, n_gen=n_gen,
@@ -54,3 +55,48 @@
 # print(f'Time to run the algorithm for {n_gen} generations: {time.time() - start_time}')
 #
 # plot_front(nds['F'])
+
+# =============================================================
+# =============================================================
+
+# from PMOEA import PMOEA
+# from PMOP import MyPMOP
+#
+# algorithm = PMOEA(n_gen=10, pop_size=100, lambda_partitions=5,
+#                   problem=MyPMOP, algorithm='nsga3', verbose=True)
+#
+# algorithm()
+
+# =============================================================
+# =============================================================
+
+# from SMSEMOA_HV import SMSEMOA
+# from PMOP import MyPMOP
+# import pandas as pd
+#
+#
+# n_gen = 100000
+# algorithm = SMSEMOA(pop_size=100, n_gen=n_gen,
+#                     problem=MyPMOP(lambda_mass=0.0), verbose=True)
+#
+# pop, nds, hv = algorithm()
+#
+# hv_df = pd.DataFrame(hv, columns=['n_gen', 'hv_value']).to_csv(path_or_buf='HVanalysis.csv')
+
+# =============================================================
+# =============================================================
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sb
+
+
+df = pd.read_csv(filepath_or_buffer='HVanalysis.csv')
+
+sb.lineplot(x=np.array(df['n_gen'])[3:], y=np.array(df['hv_value'])[3:])
+plt.xlabel('Number of generations')
+plt.ylabel('Hypervolume value')
+plt.show()
+
+
