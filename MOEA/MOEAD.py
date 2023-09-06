@@ -21,7 +21,7 @@ class MOEAD:
         self.verbose = verbose  # Print the results so far
 
     @staticmethod
-    def dominate(p, q):
+    def _dominate(p, q):
         flag = True
 
         # Dominates if every objective value of p is less than the one of q
@@ -153,7 +153,7 @@ class MOEAD:
             n = 0
             for j in range(len(front['F'])):
                 q = front['F'][j]
-                if self.dominate(q, p):
+                if self._dominate(q, p):
                     n += 1
             if n == 0:
                 nds.append(i)

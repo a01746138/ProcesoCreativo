@@ -23,7 +23,7 @@ class SMSEMOA:
         self.verbose = verbose  # Print the results so far
 
     @staticmethod
-    def dominate(p, q):
+    def _dominate(p, q):
         flag = True
 
         # Dominates if every objective value of p is less than the one of q
@@ -34,7 +34,7 @@ class SMSEMOA:
         return flag
 
     @staticmethod
-    def min_contribution(f, n_pop):
+    def _min_contribution(f, n_pop):
         # Sort every solution
         front = []
         for index in f:
@@ -61,7 +61,7 @@ class SMSEMOA:
 
         return int(front[r][2])
 
-    def fast_non_dominated_sorting(self, pop):
+    def _fast_non_dominated_sorting(self, pop):
         f1 = []
         fronts = {}
         sp = {}
@@ -72,10 +72,10 @@ class SMSEMOA:
             n = 0
             for j in range(len(pop['F'])):
                 q = pop['F'][j]
-                if self.dominate(p, q):  # if p dominates q
+                if self._dominate(p, q):  # if p dominates q
                     # Add q to the set of dominated solutions by p
                     s.append(j)
-                elif self.dominate(q, p):  # if q dominates p
+                elif self._dominate(q, p):  # if q dominates p
                     # Increment the domination counter of p
                     n += 1
             sp[f'p_{i}'] = s
@@ -138,7 +138,7 @@ class SMSEMOA:
             n_pop[key] = pop[key] + q[key]
 
         # Fast-non-dominated sorting
-        fronts = self.fast_non_dominated_sorting(n_pop)
+        fronts = self._fast_non_dominated_sorting(n_pop)
 
         # Obtain the index of the element with the least contribution
         if len(fronts) - 1 > 1:
@@ -146,9 +146,9 @@ class SMSEMOA:
             if len(f) < 4:
                 r = np.random.choice(f)
             else:
-                r = self.min_contribution(f, n_pop['F'])
+                r = self._min_contribution(f, n_pop['F'])
         else:
-            r = self.min_contribution(fronts['F1'], n_pop['F'])
+            r = self._min_contribution(fronts['F1'], n_pop['F'])
 
         # Eliminates the r element of the population
         for key in n_pop.keys():

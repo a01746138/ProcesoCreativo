@@ -13,10 +13,12 @@ data, err, over = separate()
 
 # Plot the objective space of the MATLAB's data
 # -----------------------------------------
-sn.scatterplot(x=data['Hcons'],
-               y=-data['Pmech'])
+sn.scatterplot(x=data['Hcons'][data['Mass'] == 1600.0],
+               y=-data['Pmech'][data['Mass'] == 1600.0])
 plt.xlabel('Hydrogen consumption [kg]')
 plt.ylabel('Total mechanical power of the motor [kW]')
+plt.xlim(0.3, 1.5)
+plt.ylim(-100, -10)
 plt.show()
 
 
