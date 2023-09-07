@@ -4,6 +4,7 @@ import numpy as np
 from GeneticOperators import TournamentSelection as ts
 from GeneticOperators import SimulatedBinaryCrossover as sbx
 from GeneticOperators import PolynomialMutation as pm
+from PerformanceIndicators import Hypervolume as hv
 
 
 class MOEAD:
@@ -30,6 +31,35 @@ class MOEAD:
                 flag = False
                 return flag
         return flag
+
+    @staticmethod
+    def _nds_hv(nds):
+        # Sort every solution
+        front = np.array(nds['F'])
+        front = front[front[:, 0].argsort()]
+
+        # Create reference point
+        nadir_point = np.array([1, 0])
+        hypervolume = hv(nadir_point)  # Create the reference space
+
+        # Obtain total Hypervolume value
+        total_hv = hypervolume(front)
+
+        return total_hv
+
+    def _non_dominated_samples(self, front):
+        indexes = []
+        for i in range(len(front['F'])):
+            p = front['F'][i]
+            n = 0
+            for j in range(len(front['F'])):
+                q = front['F'][j]
+                if self._dominate(q, p):
+                    n += 1
+            if n == 0:
+                indexes.append(i)
+
+        return indexes
 
     def _new_individual(self, index, pop):
 
@@ -162,7 +192,8 @@ class MOEAD:
 
     def _do(self):
         c = 0
-        nds_index = []
+        nds = {}
+        hv_history = []
 
         # Initialize weights, neighborhoods, and population
         self.weights = self._weights_vector()
@@ -175,24 +206,34 @@ class MOEAD:
         while c < self.n_gen:
             pop, nds_index, utopian_point = self._update(utopian_point, pop)
 
+            # Obtain the nds list
+            nds_index = self._non_dominated_samples(pop)
+
+            # Determine the nds per population
+            for key in pop.keys():
+                nds[key] = [pop[key][index] for index in nds_index]
+
+            # Obtain the total hv of the nds
+            nds_hv_value = np.around(self._nds_hv(nds), 7)
+
             n_eval += self.pop_size
             c += 1
 
+            if n_eval % 500 == 0:
+                hv_history.append([n_eval, nds_hv_value])
+
             if self.verbose:
                 if c == 1:
-                    print('     n_gen     | n_evaluations |      nds      ')
-                    print('===============================================')
+                    print('     n_gen     | n_evaluations |      nds      |    hv_value   ')
+                    print('---------------------------------------------------------------')
                 if c % 1 == 0:
                     s1 = (9 - len(str(c))) * ' ' + str(c) + 6 * ' '
                     s2 = (9 - len(str(n_eval))) * ' ' + str(n_eval) + 6 * ' '
                     s3 = (9 - len(str(len(nds_index)))) * ' ' + str(len(nds_index)) + 6 * ' '
-                    print(s1 + '|' + s2 + '|' + s3)
+                    s4 = (12 - len(str(nds_hv_value))) * ' ' + str(nds_hv_value) + 3 * ' '
+                    print(s1 + '|' + s2 + '|' + s3 + '|' + s4)
 
-        nds = {}
-        for key in pop.keys():
-            nds[key] = [pop[key][index] for index in nds_index]
-
-        return pop, nds
+        return pop, nds, hv_history
 
     def __call__(self):
         return self._do()

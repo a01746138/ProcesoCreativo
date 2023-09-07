@@ -70,33 +70,31 @@ import pandas as pd
 # =============================================================
 # =============================================================
 
-# from SMSEMOA_HV import SMSEMOA
+# from MOEAD import MOEAD
 # from PMOP import MyPMOP
-# import pandas as pd
 #
-#
-# n_gen = 100000
-# algorithm = SMSEMOA(pop_size=100, n_gen=n_gen,
-#                     problem=MyPMOP(lambda_mass=0.0), verbose=True)
+# n_gen = 10
+# algorithm = MOEAD(pop_size=100, n_gen=n_gen,
+#                   problem=MyPMOP(lambda_mass=0.0), verbose=True)
 #
 # pop, nds, hv = algorithm()
+#
+# print(nds)
 #
 # hv_df = pd.DataFrame(hv, columns=['n_gen', 'hv_value']).to_csv(path_or_buf='HVanalysis.csv')
 
 # =============================================================
 # =============================================================
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sb
-
-
-df = pd.read_csv(filepath_or_buffer='HVanalysis.csv')
-
-sb.lineplot(x=np.array(df['n_gen'])[3:], y=np.array(df['hv_value'])[3:])
-plt.xlabel('Number of generations')
-plt.ylabel('Hypervolume value')
-plt.show()
-
-
+# import pandas as pd
+# import numpy as np
+# import matplotlib.pyplot as plt
+# import seaborn as sb
+#
+#
+# df = pd.read_csv(filepath_or_buffer='HVanalysis.csv')
+#
+# sb.lineplot(x=np.array(df['n_eval'])[3:], y=np.array(df['hv_value'])[3:])
+# plt.xlabel('Number of function evaluations')
+# plt.ylabel('Hypervolume value')
+# plt.show()
