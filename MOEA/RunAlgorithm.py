@@ -4,11 +4,17 @@
 from PMOEA import PMOEA
 from PMOP import MyPMOP
 
-n_gen = 10
-pop_size = 50
-lambda_partitions = 2
+lambda_partitions = 10
 algorithm = 'nsga3'
+pop_size = 100
 nuc = 1
+
+if algorithm in ['nsga3', 'moead']:
+    n_gen = 600
+elif algorithm == 'sms':
+    n_gen = 60000
+else:
+    n_gen = 0
 
 for i in range(1, 7):
     ex = (nuc - 1) * 6 + i
