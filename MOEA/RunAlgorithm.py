@@ -1,11 +1,13 @@
 # Run the PMOEA algorithm
 # ==========================================================
+import numpy as np
 
 from PMOEA import PMOEA
 from PMOP import MyPMOP
+import time
 
 lambda_partitions = 10
-algorithm = 'nsga3'
+algorithm = 'sms'
 pop_size = 100
 nuc = 1
 
@@ -23,9 +25,12 @@ for i in range(1, 7):
     else:
         experiment = f'{ex}'
 
+    start_time = time.time()
     run = PMOEA(n_gen=n_gen, pop_size=pop_size,
                 lambda_partitions=lambda_partitions,
                 problem=MyPMOP, algorithm=algorithm,
                 verbose=True)
 
     run(experiment=experiment)
+    simulation_time = time.time() - start_time
+    np.savetxt(X=[simulation_time], fname=f'../MOEATimes/{algorithm}_exp{experiment}.txt')
