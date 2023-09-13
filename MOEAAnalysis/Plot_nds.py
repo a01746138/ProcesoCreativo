@@ -63,9 +63,9 @@ def plot3d(algorithm: str):
     ax.set_xlim(0.3, 1.5)
     ax.set_ylim(-100, -10)
     ax.set_zlim(1500, 2600)
-    ax.set_xlabel('Hcons')
-    ax.set_ylabel('Pmech')
-    ax.set_zlabel('Mass')
+    ax.set_xlabel('Hydrogen consumption [kg]')
+    ax.set_ylabel('Total mechanical power of the motor [kW]')
+    ax.set_zlabel('Total vehicle mass [kg]')
 
     ax.view_init(elev=20., azim=-35)
 
@@ -84,8 +84,8 @@ def plot2d(algorithm):
     ax.legend()
     ax.set_xlim(0.3, 1.5)
     ax.set_ylim(-100, -10)
-    ax.set_xlabel('Hcons')
-    ax.set_ylabel('Pmech')
+    ax.set_xlabel('Hydrogen consumption [kg]')
+    ax.set_ylabel('Total mechanical power of the motor [kW]')
 
     plt.show()
 
