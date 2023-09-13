@@ -1,4 +1,4 @@
-import joblib
+from joblib import load
 import numpy as np
 
 
@@ -26,10 +26,10 @@ class MyPMOP:
 
     def evaluate(self, x):
 
-        h_model = joblib.load(filename='../Surrogate/model_h_ann.joblib',
-                              mmap_mode='r')
-        mech_model = joblib.load(filename='../Surrogate/model_mech_dtr.joblib',
-                                 mmap_mode='r')
+        h_model = load(filename='../Surrogate/model_h_ann.joblib',
+                       mmap_mode='r')
+        mech_model = load(filename='../Surrogate/model_mech_dtr.joblib',
+                          mmap_mode='r')
 
         xx = np.reshape([x[0], x[1], x[2], x[3], x[4], self.lm], (1, -1))
 
