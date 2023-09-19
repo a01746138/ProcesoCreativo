@@ -345,6 +345,7 @@ class IMIA:
 
     def _do(self):
         c = 0
+        total_pop = {}
         nds = {}
         hv_history = []
 
@@ -411,7 +412,7 @@ class IMIA:
                     s4 = (12 - len(str(nds_hv_value))) * ' ' + str(nds_hv_value) + 3 * ' '
                     print(s1 + '|' + s2 + '|' + s3 + '|' + s4)
 
-        return pop, nds, hv_history
+        return total_pop, nds, hv_history
 
     def __call__(self):
         return self._do()

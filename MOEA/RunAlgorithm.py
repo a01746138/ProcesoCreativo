@@ -1,7 +1,6 @@
 # Run the PMOEA algorithm
 # ==========================================================
 import numpy as np
-
 from PMOEA import PMOEA
 from PMOP import MyPMOP
 import time
