@@ -1,5 +1,4 @@
-# SMS-EMOA implementation in python to determine the total hypervolume
-# of the non-dominated solutions
+# SMS-EMOA implementation in python
 # ==========================================================
 
 import numpy as np

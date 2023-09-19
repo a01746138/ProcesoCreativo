@@ -4,6 +4,7 @@
 from SMSEMOA import SMSEMOA
 from MOEAD import MOEAD
 from NSGA3 import NSGA3
+from IMIA import IMIA
 import numpy as np
 
 
@@ -22,11 +23,12 @@ class PMOEA:
         self.lambda_partitions = lambda_partitions
         self.verbose = verbose
 
-        if algorithm not in ['sms', 'moead', 'nsga3']:
+        if algorithm not in ['sms', 'moead', 'nsga3', 'imia']:
             print('Defined algorithm not found.')
             quit()
         else:
-            moea = {'sms': SMSEMOA, 'moead': MOEAD, 'nsga3': NSGA3}
+            moea = {'sms': SMSEMOA, 'moead': MOEAD,
+                    'nsga3': NSGA3, 'imia': IMIA}
             self.algorithm = moea[algorithm]
             self.algorithm_ref = algorithm
 

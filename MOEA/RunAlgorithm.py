@@ -7,11 +7,11 @@ from PMOP import MyPMOP
 import time
 
 lambda_partitions = 10
-algorithm = 'sms'
+algorithm = 'imia'
 pop_size = 100
 nuc = 1
 
-if algorithm in ['nsga3', 'moead']:
+if algorithm in ['nsga3', 'moead', 'imia']:
     n_gen = 600
 elif algorithm == 'sms':
     n_gen = 60000

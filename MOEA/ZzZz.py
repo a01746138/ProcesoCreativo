@@ -4,7 +4,6 @@
 # import time
 #
 # start_time = time.time()
-import pandas as pd
 
 # n_gen = 40000
 # algorithm = SMSEMOA(pop_size=100, n_gen=n_gen,
@@ -98,3 +97,25 @@ import pandas as pd
 # plt.xlabel('Number of function evaluations')
 # plt.ylabel('Hypervolume value')
 # plt.show()
+
+# =============================================================
+# =============================================================
+
+# from IMIA import IMIA
+# from PMOP import MyPMOP
+# from VisualizeFront import plot_front
+# import time
+#
+# start_time = time.time()
+#
+# n_gen = 60
+# algorithm = IMIA(pop_size=100, n_gen=n_gen,
+#                  problem=MyPMOP(lambda_mass=0.0), verbose=True,
+#                  indicators=['HV', 'R2', 'EpsPlus', 'DeltaP', 'IGDPlus'])
+#
+# pop, nds, hv = algorithm()
+#
+# print(f'Time to run the algorithm for {n_gen} generations: {time.time() - start_time}')
+#
+# plot_front(nds['F'])
+
