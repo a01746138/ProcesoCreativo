@@ -39,7 +39,7 @@ def save_data(pop_lam, nds_lam, hv_lam):
                    X=hv_lambda, delimiter=',')
 
 
-for i in range(1, 2):
+for i in range(1, 7):
     ex = (nuc - 1) * 6 + i
     if ex < 10:
         experiment = f'0{ex}'
