@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-algorithm = ['sms', 'moead', 'nsga3']
+algorithm = ['sms', 'moead', 'nsga3', 'imia']
 
 columns = []
 data = []
@@ -24,6 +24,6 @@ df = pd.DataFrame(np.array(data).T, columns=columns)
 
 stats = df.describe()
 
-stats.to_csv(path_or_buf='HVStats.csv')
+# stats.to_csv(path_or_buf='HVStats.csv')
 
 

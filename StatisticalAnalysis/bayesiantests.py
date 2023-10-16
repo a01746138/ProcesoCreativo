@@ -38,7 +38,7 @@ def correlated_ttest(x, rope, runs=1, verbose=False, names=('C1', 'C2')):
     |
     The test assumes that the classifiers were evaluated using cross
     validation. The number of folds is determined from the length of the vector
-    of differences, as `len(diff) / ExperimentsMOEA`. The variance includes a correction
+    of differences, as `len(diff) / runs`. The variance includes a correction
     for underestimation of variance due to overlapping training sets, as
     described in `Inference for the Generalization Error
     <http://link.springer.com/article/10.1023%2FA%3A1024068626366>`_,
@@ -48,7 +48,7 @@ def correlated_ttest(x, rope, runs=1, verbose=False, names=('C1', 'C2')):
     Args:
     x (array): a vector of differences or a 2d array with pairs of scores.
     rope (float): the width of the rope  
-    ExperimentsMOEA (int): number of repetitions of cross validation (default: 1)
+    runs (int): number of repetitions of cross validation (default: 1)
     return: probablities (tuple) that differences are below -rope, within rope or
         above rope
     """

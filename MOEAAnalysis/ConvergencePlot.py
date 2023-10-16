@@ -4,9 +4,9 @@ import seaborn as sb
 import matplotlib.pyplot as plt
 
 
-def save():
+def save(algorithms: list):
     for lam in range(10):
-        for a in ['sms', 'moead', 'nsga3']:
+        for a in algorithms:
             hv_list = []
             for i in range(1, 31):
                 if i < 10:
@@ -19,7 +19,7 @@ def save():
             for j in range(120):
                 columns.append((j + 1) * 500)
             df = pd.DataFrame(np.array(hv_list), columns=columns)
-            # df.to_csv(path_or_buf=f'HV/{a}_hv_lambda{lam}.csv', index=False)
+            df.to_csv(path_or_buf=f'HV/{a}_hv_lambda{lam}.csv', index=False)
 
 
 def plot():
@@ -40,4 +40,25 @@ def plot():
         plt.ylabel('Hypervolume value')
         plt.title(fr'Convergence plot when $\lambda_{lam}$')
         plt.tight_layout()
-        plt.savefig(fname=f'../Images/convergence_lambda{lam}.png')
+        plt.savefig(fname=f'../Images/convergence2_lambda{lam}.png')
+
+
+def plot2():
+    for lam in range(10):
+        ax = plt.figure(dpi=300).add_subplot()
+        data_sms = pd.read_csv(filepath_or_buffer=f'HV/sms_hv_lambda{lam}.csv')
+        data_imia = pd.read_csv(filepath_or_buffer=f'HV/imia_hv_lambda{lam}.csv')
+        n_gen = [int(x) for x in data_sms.columns]
+        data_sms_m = data_sms.median()
+        data_imia_m = data_imia.median()
+        sb.lineplot(y=data_sms_m, x=n_gen, ax=ax, label='SMS-EMOA')
+        sb.lineplot(y=data_imia_m, x=n_gen, ax=ax, label='IMIA')
+        plt.legend()
+        plt.xlabel('Number of function evaluations')
+        plt.ylabel('Hypervolume value')
+        plt.title(fr'Convergence plot when $\lambda_{lam}$')
+        plt.tight_layout()
+        plt.savefig(fname=f'../Images/convergence2_lambda{lam}.png')
+
+
+plot2()

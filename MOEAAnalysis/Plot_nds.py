@@ -29,8 +29,8 @@ def non_dominated_samples(front):
     return indexes
 
 
-def save_nds():
-    for algorithm in ['sms', 'moead', 'nsga3']:
+def save_nds(algorithm_list: list):
+    for algorithm in algorithm_list:
         for lam in range(10):
             data = []
             for k in range(1, 31):
@@ -69,10 +69,10 @@ def plot3d(algorithm: str):
 
     ax.view_init(elev=20., azim=-35)
 
-    plt.show()
+    plt.savefig(fname=f'../Images/{algorithm}_3dfamily.png')
 
 
-def plot2d(algorithm):
+def plot2d(algorithm: str):
     ax = plt.figure(dpi=300).add_subplot()
     for lam in range(10):
         file = pd.read_csv(filepath_or_buffer=f'NDS/{algorithm}_nds_lambda{lam}.csv')
@@ -87,9 +87,9 @@ def plot2d(algorithm):
     ax.set_xlabel('Hydrogen consumption [kg]')
     ax.set_ylabel('Total mechanical power of the motor [kW]')
 
-    plt.show()
+    plt.savefig(fname=f'../Images/{algorithm}_2dfamily.png')
 
 
-al = 'nsga3'
+al = 'imia'
 plot3d(al)
 plot2d(al)
