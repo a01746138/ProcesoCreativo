@@ -5,7 +5,7 @@ from PMOP_PIMIA import MyPMOP
 from PIMIA import IMIA
 import time
 
-n_gen = 10
+n_gen = 500
 pop_size = 100
 algorithm = 'pimia'
 nuc = 1

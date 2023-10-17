@@ -122,19 +122,19 @@
 # =============================================================
 # =============================================================
 
-# from PIMIA import IMIA
-# from PMOP_PIMIA import MyPMOP
-# import time
-#
-# start_time = time.time()
-#
-# n_gen = 10
-# algorithm = IMIA(pop_size=100, n_gen=n_gen,
-#                  problem=MyPMOP(), verbose=True,
-#                  indicators=['HV', 'R2', 'EpsPlus', 'DeltaP', 'IGDPlus'])
-#
-# pop, nds, hv = algorithm()
-#
-# print(f'Time to run the algorithm for {n_gen} generations: {time.time() - start_time}')
-# print('================')
-# print(hv)
+from PIMIA import IMIA
+from PMOP_PIMIA import MyPMOP
+import time
+
+start_time = time.time()
+
+n_gen = 20
+algorithm = IMIA(pop_size=100, n_gen=n_gen,
+                 problem=MyPMOP(), verbose=True,
+                 indicators=['HV', 'R2', 'EpsPlus', 'DeltaP', 'IGDPlus'])
+
+pop, nds, hv = algorithm()
+
+print(f'Time to run the algorithm for {n_gen} generations: {time.time() - start_time}')
+print('================')
+print(hv)

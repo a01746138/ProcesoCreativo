@@ -308,11 +308,11 @@ class IMIA:
                 for j in range(len(self.indicators)):
                     if i != j:
                         mig = {'X': [], 'F': []}
-                        for _ in range(self.n_mig):
+                        for k in range(self.n_mig):
                             index = np.random.randint(0, self.mig_freq)
                             lamb = np.random.randint(0, self.n_lam)
-                            for key in mig.keys():
-                                mig[key] = mig[key] + [pop[f'lam{lamb}_i{i}'][key][index]]
+                            mig['X'] = mig['X'] + [pop[f'lam{lamb}_i{i}']['X'][index]]
+                            mig['F'] = mig['F'] + [self.problem.evaluate(mig['X'][k], lam)]
                         migrants[f'{i}_{lam}_{j}'] = mig
 
         for lam in range(self.n_lam):
@@ -423,10 +423,10 @@ class IMIA:
                 nds_hv_value.append(hv_value)
                 nds_hv_sum += hv_value
 
-            n_eval += self.pop_size * self.n_lam
+            n_eval += self.pop_size * self.n_lam + self.n_lam * len(self.indicators) * (len(self.indicators) - 1)
             c += 1
 
-            if n_eval % 5000 == 0:
+            if n_eval % (5800 + (c // 5) * 6000) == 0:
                 hv_history.append([n_eval] + nds_hv_value)
             if self.verbose:
                 if c == 1:
