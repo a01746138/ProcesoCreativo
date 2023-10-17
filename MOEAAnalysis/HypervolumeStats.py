@@ -1,7 +1,10 @@
+# Obtain the stats of the HV values for all the algorithms
+# ================================================================
+
 import numpy as np
 import pandas as pd
 
-algorithm = ['sms', 'moead', 'nsga3', 'imia']
+algorithm = ['sms', 'moead', 'nsga3', 'imia', 'pimia']
 
 columns = []
 data = []

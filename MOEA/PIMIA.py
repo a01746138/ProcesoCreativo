@@ -176,7 +176,7 @@ class IMIA:
                         value = np.random.rand()
                     ind.append(value)
                 x.append(ind)
-                x_f.append(self.problem.evaluate(ind, lam))
+                x_f.append(self.problem.evaluate(ind, lam/(self.n_lam - 1)))
                 n_eval += 1
             initial_pop[f'lam{lam}'] = {'X': x, 'F': x_f}
 
@@ -229,7 +229,7 @@ class IMIA:
         x = pm(eta=20, problem=self.problem, prob=1 / self.problem.n_var)(offspring)
 
         # Evaluate the new individual
-        x_f = self.problem.evaluate(x, lam)
+        x_f = self.problem.evaluate(x, lam/(self.n_lam - 1))
 
         return {'X': [list(x)], 'F': [x_f]}
 
@@ -312,7 +312,7 @@ class IMIA:
                             index = np.random.randint(0, self.mig_freq)
                             lamb = np.random.randint(0, self.n_lam)
                             mig['X'] = mig['X'] + [pop[f'lam{lamb}_i{i}']['X'][index]]
-                            mig['F'] = mig['F'] + [self.problem.evaluate(mig['X'][k], lam)]
+                            mig['F'] = mig['F'] + [self.problem.evaluate(mig['X'][k], lam/(self.n_lam - 1))]
                         migrants[f'{i}_{lam}_{j}'] = mig
 
         for lam in range(self.n_lam):

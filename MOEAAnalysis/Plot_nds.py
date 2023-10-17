@@ -90,6 +90,6 @@ def plot2d(algorithm: str):
     plt.savefig(fname=f'../Images/{algorithm}_2dfamily.png')
 
 
-al = 'imia'
-plot3d(al)
-plot2d(al)
+al = 'pimia'
+# plot3d(al)
+# plot2d(al)
