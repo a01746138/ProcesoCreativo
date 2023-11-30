@@ -5,8 +5,9 @@ from PMOEA import PMOEA
 from PMOP import MyPMOP
 import time
 
+
 lambda_partitions = 10
-algorithm = 'imia'
+algorithm = 'sms'
 pop_size = 100
 nuc = 1
 
@@ -32,4 +33,4 @@ for i in range(1, 7):
 
     run(experiment=experiment)
     simulation_time = time.time() - start_time
-    np.savetxt(X=[simulation_time], fname=f'../MOEATimes/{algorithm}_exp{experiment}.txt')
+    np.savetxt(X=[simulation_time], fname=f'../LastOne/{algorithm.upper()}/exp{experiment}.txt')

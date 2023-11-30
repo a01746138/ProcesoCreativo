@@ -7,11 +7,13 @@ from GeneticOperators import SimulatedBinaryCrossover as sbx
 from GeneticOperators import PolynomialMutation as pm
 from PerformanceIndicators import Hypervolume, R2, EpsPlus, DeltaP, IGDPlus2, RieszEnergy
 from PerformanceIndicators import IndividualContribution as ic
+from pymoo.indicators.hv import HV
 
 
 class IMIA:
 
     def __init__(self,
+                 problem_data,
                  indicators=None,
                  pop_size=100,
                  n_gen=1000,
@@ -29,6 +31,10 @@ class IMIA:
         self.n_mig = n_mig  # Number of individuals to migrate
         self.mig_freq = int(pop_size / len(indicators))  # Migration frequency
         self.indicators = indicators
+        self.lam, self.exp = problem_data
+
+        ref_point = np.array([1, 0])
+        self.total_hv = HV(ref_point=ref_point)
 
     @staticmethod
     def _dominate(p, q):
@@ -352,6 +358,10 @@ class IMIA:
         # Initialize population
         initial_pop, n_eval = self._initialize_pop()
 
+        txt_pop = [list(np.append(initial_pop['X'][i], initial_pop['F'][i])) for i in range(len(initial_pop['X']))]
+        np.savetxt(fname=f'../LastOne/IMIA/Experiment{self.exp}/pop_lambda{self.lam}_c{n_eval}.txt',
+                   X=txt_pop, delimiter=',')
+
         # Initialize indicator-island populations and nds
         a, pop = {}, {}
         for i in range(len(self.indicators)):
@@ -393,7 +403,11 @@ class IMIA:
                 nds[key] = [total_pop[key][index] for index in nds_index]
 
             # Obtain the total hv of the nds
-            nds_hv_value = np.around(self._nds_hv(nds), 7)
+            nds_hv_value = np.around(self.total_hv(np.array(nds['F'])), 7)
+
+            txt_pop = [list(np.append(total_pop['X'][i], total_pop['F'][i])) for i in range(len(total_pop['X']))]
+            np.savetxt(fname=f'../LastOne/IMIA/Experiment{self.exp}/pop_lambda{self.lam}_c{n_eval}.txt',
+                       X=txt_pop, delimiter=',')
 
             n_eval += self.pop_size
             c += 1

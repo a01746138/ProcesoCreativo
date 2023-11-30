@@ -55,6 +55,13 @@ mech_models_lbl = ['Pmech_ann', 'Pmech_svr', 'Pmech_dtr', 'Pmech_rfr']
 
 h_results = cv_table(models_set=h_models, labels=h_models_lbl, flag=True)
 mech_results = cv_table(models_set=mech_models, labels=mech_models_lbl, flag=False)
+for j in range(9):
+    h_results_e = cv_table(models_set=h_models, labels=h_models_lbl, flag=True)
+    mech_results_e = cv_table(models_set=mech_models, labels=mech_models_lbl, flag=False)
+    h_results = pd.concat([h_results, h_results_e])
+    mech_results = pd.concat([mech_results, mech_results_e])
+    print(j)
+
 
 h_results.to_csv(path_or_buf='CV_Hcons.csv', index=False)
 mech_results.to_csv(path_or_buf='CV_Pmech.csv', index=False)

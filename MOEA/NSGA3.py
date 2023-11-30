@@ -163,7 +163,7 @@ class NSGA3:
     def _associate(self, norm):
         a = {}
         for index in range(len(norm)):
-            ind = norm[index][:2]
+            ind = norm[index][:self.problem.n_obj]
             d_min = np.inf
             w_min = []
             for w_index in range(len(self.ref_points)):

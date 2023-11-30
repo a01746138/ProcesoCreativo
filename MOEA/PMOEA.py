@@ -65,11 +65,11 @@ class PMOEA:
 
         for index in range(self.lambda_partitions):
             lam = lambda_vec[index]
-            pop, nds, hv = self.algorithm(n_gen=self.n_gen, problem=self.problem(lambda_mass=lam),
+            pop, nds, hv = self.algorithm(problem_data=[str(index), experiment] ,n_gen=self.n_gen, problem=self.problem(lambda_mass=lam),
                                           pop_size=self.pop_size, verbose=self.verbose)()
 
-            # Save the pop, nds, and hypervolume convergence data
-            self._save_data(pop, nds, hv, lam, index, experiment)
+            # # Save the pop, nds, and hypervolume convergence data
+            # self._save_data(pop, nds, hv, lam, index, experiment)
 
             if self.verbose:
                 print(63 * '=')

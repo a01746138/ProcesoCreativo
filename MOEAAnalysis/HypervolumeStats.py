@@ -29,4 +29,5 @@ stats = df.describe()
 
 # stats.to_csv(path_or_buf='HVStats.csv')
 
+df.median().to_csv(path_or_buf='HVMedian.csv')
 

@@ -29,7 +29,7 @@ def norm(df):
     return df
 
 
-def bayesian_comparison(df):
+def bayesian_comparison(df, verbose=False):
     df = norm(df)
     lbl = np.array(df.columns.values)
     for i in df.columns:
@@ -38,23 +38,24 @@ def bayesian_comparison(df):
             if i != j:
                 x = np.array(df[[i, j]])
                 names = (i[6:], j[6:])
-                bt.correlated_ttest(x=x, rope=rope, names=names, verbose=True)
-                samples = bt.correlated_ttest_MC(x=x, rope=rope, nsamples=40732)
-                sn.kdeplot(samples, fill=True)
-                # plot rope region
-                plt.axvline(x=-rope, color='orange')
-                plt.axvline(x=rope, color='orange')
-                # add label
-                if i[:5] == 'Hcons':
-                    plt.title(r'$f_1$ surrogate model comparison')
-                elif i[:5] == 'Pmech':
-                    plt.title(r'$f_2$ surrogate model comparison')
-                plt.xlabel(f'{names[0].upper()} vs. {names[1].upper()}')
-                plt.savefig(fname=f'../Images/posterior_{i[:5]}_{names[0].upper()}_{names[1].upper()}.png')
-                plt.show()
+                bt.correlated_ttest(x=x, rope=rope, runs=10, names=names, verbose=True)
+                if verbose:
+                    samples = bt.correlated_ttest_MC(x=x, rope=rope, runs=10, nsamples=40732)
+                    sn.kdeplot(samples, fill=True)
+                    # plot rope region
+                    plt.axvline(x=-rope, color='orange')
+                    plt.axvline(x=rope, color='orange')
+                    # add label
+                    if i[:5] == 'Hcons':
+                        plt.title(r'$f_{1,\lambda}(\mathbf{x})$ surrogate model comparison')
+                    elif i[:5] == 'Pmech':
+                        plt.title(r'$f_{2,\lambda}(\mathbf{x})$ surrogate model comparison')
+                    plt.xlabel(f'{names[0].upper()} vs. {names[1].upper()}')
+                    plt.savefig(fname=f'../Images/posterior_{i[:5]}_{names[0].upper()}_{names[1].upper()}.png')
+                    plt.show()
 
 
-bayesian_comparison(cv_h)
+bayesian_comparison(cv_h, verbose=True)
 print('----------------------------------------')
-bayesian_comparison(cv_mech)
+bayesian_comparison(cv_mech, verbose=True)
 

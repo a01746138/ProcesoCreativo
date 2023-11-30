@@ -7,11 +7,12 @@ from GeneticOperators import SimulatedBinaryCrossover as sbx
 from GeneticOperators import PolynomialMutation as pm
 from PerformanceIndicators import Hypervolume as hv
 from PerformanceIndicators import IndividualContribution as ic
-
+from pymoo.indicators.hv import HV
 
 class SMSEMOA:
 
     def __init__(self,
+                 problem_data,
                  pop_size=100,
                  n_gen=1000,
                  problem=None,
@@ -21,6 +22,10 @@ class SMSEMOA:
         self.pop_size = pop_size  # Population size
         self.n_gen = n_gen  # Number of generations
         self.verbose = verbose  # Print the results so far
+        self.lam, self.exp = problem_data
+
+        ref_point = np.array([1, 0])
+        self.total_hv = HV(ref_point=ref_point)
 
     @staticmethod
     def _dominate(p, q):
@@ -193,6 +198,10 @@ class SMSEMOA:
         # Initialize population
         pop, n_eval = self._initialize_pop()
 
+        txt_pop = [list(np.append(pop['X'][i], pop['F'][i])) for i in range(len(pop['X']))]
+        np.savetxt(fname=f'../LastOne/SMS/Experiment{self.exp}/pop_lambda{self.lam}_c{n_eval}.txt',
+                   X=txt_pop, delimiter=',')
+
         # Run until the termination condition is fulfilled
         while c < self.n_gen:
             # Generate a new individual
@@ -208,7 +217,12 @@ class SMSEMOA:
                 nds[key] = [pop[key][index] for index in nds_index]
 
             # Obtain the total hv of the nds
-            nds_hv_value = np.around(self._nds_hv(nds), 7)
+            nds_hv_value = np.around(self.total_hv(np.array(nds['F'])), 7)
+
+            if (c + 1) % 100 == 0:
+                txt_pop = [list(np.append(pop['X'][i], pop['F'][i])) for i in range(len(pop['X']))]
+                np.savetxt(fname=f'../LastOne/SMS/Experiment{self.exp}/pop_lambda{self.lam}_c{n_eval + 1}.txt',
+                           X=txt_pop, delimiter=',')
 
             n_eval += 1
             c += 1

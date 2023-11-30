@@ -38,22 +38,22 @@
 # =============================================================
 # =============================================================
 
-# from NSGA3 import NSGA3
-# from PMOP import MyPMOP
-# from VisualizeFront import plot_front
-# import time
-#
-# start_time = time.time()
-#
-# n_gen = 400
-# algorithm = NSGA3(n_gen=n_gen, problem=MyPMOP(lambda_mass=0.0),
-#                   pop_size=100, verbose=True)
-#
-# pop, nds = algorithm()
-#
-# print(f'Time to run the algorithm for {n_gen} generations: {time.time() - start_time}')
-#
-# plot_front(nds['F'])
+from NSGA3 import NSGA3
+from PMOP import MyPMOP
+from VisualizeFront import plot_front
+import time
+
+start_time = time.time()
+
+n_gen = 10
+algorithm = NSGA3(n_gen=n_gen, problem=MyPMOP(lambda_mass=0.0),
+                  pop_size=100, verbose=True)
+
+pop, nds = algorithm()
+
+print(f'Time to run the algorithm for {n_gen} generations: {time.time() - start_time}')
+
+plot_front(nds['F'])
 
 # =============================================================
 # =============================================================
@@ -122,19 +122,48 @@
 # =============================================================
 # =============================================================
 
-from PIMIA import IMIA
-from PMOP_PIMIA import MyPMOP
-import time
+# from PIMIA import IMIA
+# from PMOP_PIMIA import MyPMOP
+# import time
+#
+# start_time = time.time()
+#
+# n_gen = 20
+# algorithm = IMIA(pop_size=100, n_gen=n_gen,
+#                  problem=MyPMOP(), verbose=True,
+#                  indicators=['HV', 'R2', 'EpsPlus', 'DeltaP', 'IGDPlus'])
+#
+# pop, nds, hv = algorithm()
+#
+# print(f'Time to run the algorithm for {n_gen} generations: {time.time() - start_time}')
+# print('================')
+# print(hv)
 
-start_time = time.time()
+# =============================================================
+# =============================================================
 
-n_gen = 20
-algorithm = IMIA(pop_size=100, n_gen=n_gen,
-                 problem=MyPMOP(), verbose=True,
-                 indicators=['HV', 'R2', 'EpsPlus', 'DeltaP', 'IGDPlus'])
-
-pop, nds, hv = algorithm()
-
-print(f'Time to run the algorithm for {n_gen} generations: {time.time() - start_time}')
-print('================')
-print(hv)
+# from PMOP import MyPMOP
+# import time
+#
+# p = MyPMOP()
+#
+# start_time = time.time()
+# print(p.evaluate([0, 0, 0, 0, 0, 0]))
+# print(f'Time: {time.time() - start_time}')
+#
+# start_time = time.time()
+# p.evaluate([0, 0, 0, 0, 0, 1])
+# print(f'Time: {time.time() - start_time}')
+#
+# start_time = time.time()
+# p.evaluate([0, 0, 0, 1, 0, 0])
+# p.evaluate([1, 0, 0, 1, 0, 0])
+# p.evaluate([0, 0.5, 0, 1, 0, 0])
+# p.evaluate([0, 0, 0.5, 1, 0, 0])
+# p.evaluate([0, 0, 0, 1, 0, 0])
+# p.evaluate([0, 0, 0, 1, 0.5, 0])
+# p.evaluate([0, 0.1, 0, 1, 0, 0])
+# p.evaluate([0, 0, 0, 1, 0, 0])
+# p.evaluate([0, 1, 0, 1, 0, 0])
+# p.evaluate([0, 0, 0, 1, 0.6, 0])
+# print(f'Time: {time.time() - start_time}')

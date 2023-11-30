@@ -7,11 +7,13 @@ from GeneticOperators import SimulatedBinaryCrossover as sbx
 from GeneticOperators import PolynomialMutation as pm
 from PerformanceIndicators import Hypervolume, R2, EpsPlus, DeltaP, IGDPlus2, RieszEnergy
 from PerformanceIndicators import IndividualContribution as ic
+from pymoo.indicators.hv import HV
 
 
 class IMIA:
 
     def __init__(self,
+                 exp,
                  indicators=None,
                  pop_size=100,
                  n_gen=1000,
@@ -31,6 +33,10 @@ class IMIA:
         self.mig_freq = int(pop_size / len(indicators))  # Migration frequency
         self.indicators = indicators
         self.n_lam = n_lam
+        self.exp = exp
+
+        ref_point = np.array([1, 0])
+        self.total_hv = HV(ref_point=ref_point)
 
     @staticmethod
     def _dominate(p, q):
@@ -361,6 +367,11 @@ class IMIA:
         # Initialize population
         initial_pop, n_eval = self._initialize_pop()
 
+        for lam in range(self.n_lam):
+            txt_pop = [list(np.append(initial_pop[f'lam{lam}']['X'][i], initial_pop[f'lam{lam}']['F'][i])) for i in range(len(initial_pop[f'lam{lam}']['X']))]
+            np.savetxt(fname=f'../LastOne/PIMIA/Experiment{self.exp}/pop_lambda{lam}_c{int(n_eval / self.n_lam)}.txt',
+                       X=txt_pop, delimiter=',')
+
         # Initialize indicator-island populations and nds
         a, pop = {}, {}
         for lam in range(self.n_lam):
@@ -419,12 +430,18 @@ class IMIA:
                 nds_lam[f'lam{lam}'] = nds
 
                 # Obtain the total hv of the nds
-                hv_value = np.around(self._nds_hv(nds), 7)
+                hv_value = np.around(self.total_hv(np.array(nds['F'])), 7)
                 nds_hv_value.append(hv_value)
                 nds_hv_sum += hv_value
 
             n_eval += self.pop_size * self.n_lam + self.n_lam * len(self.indicators) * (len(self.indicators) - 1)
             c += 1
+
+            for lam in range(self.n_lam):
+                txt_pop = [list(np.append(total_pop_lam[f'lam{lam}']['X'][i], total_pop_lam[f'lam{lam}']['F'][i])) for i in
+                           range(len(total_pop_lam[f'lam{lam}']['X']))]
+                np.savetxt(fname=f'../LastOne/PIMIA/Experiment{self.exp}/pop_lambda{lam}_c{int(n_eval / self.n_lam)}.txt',
+                           X=txt_pop, delimiter=',')
 
             if n_eval % (5800 + (c // 5) * 6000) == 0:
                 hv_history.append([n_eval] + nds_hv_value)

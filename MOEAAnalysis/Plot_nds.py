@@ -46,6 +46,8 @@ def save_nds(algorithm_list: list):
             df_nds = pd.DataFrame(nds, columns=['Vbatt', 'Qbatt', 'Ndiff',
                                                 'Rwheel', 'MaxPmot', 'Mass',
                                                 'Hcons', 'Pmech']).sort_values(by=['Hcons', 'Pmech'])
+            if algorithm == 'pimia':
+                df_nds['Mass'] = df_nds['Mass'] / 9
             df_nds.to_csv(path_or_buf=f'NDS/{algorithm}_nds_lambda{lam}.csv', index=False)
 
 
@@ -59,15 +61,22 @@ def plot3d(algorithm: str):
         y = -d_file['Pmech']
         z = d_file['Mass'].iloc[0]
         ax.plot(x, y, zs=z, zdir='z', label=fr'$\lambda_{lam}$')
-    ax.legend()
     ax.set_xlim(0.3, 1.5)
     ax.set_ylim(-100, -10)
     ax.set_zlim(1500, 2600)
-    ax.set_xlabel('Hydrogen consumption [kg]')
-    ax.set_ylabel('Total mechanical power of the motor [kW]')
-    ax.set_zlabel('Total vehicle mass [kg]')
+    ax.set_xlabel(r'$f_{1,\lambda}(\mathbf{x})$ [kg]', fontsize=15)
+    ax.set_ylabel(r'$f_{2,\lambda}(\mathbf{x})$ [kW]', fontsize=15)
+    ax.set_zlabel(r'$\lambda$ [kg]', fontsize=15)
 
     ax.view_init(elev=20., azim=-35)
+
+    pos = ax.get_position()
+    ax.set_position([pos.x0, pos.y0, pos.width, pos.height * 0.85])
+    ax.legend(
+        loc='upper center',
+        bbox_to_anchor=(0.5, 1.35),
+        ncol=3,
+    )
 
     plt.savefig(fname=f'../Images/{algorithm}_3dfamily.png')
 
@@ -84,12 +93,14 @@ def plot2d(algorithm: str):
     ax.legend()
     ax.set_xlim(0.3, 1.5)
     ax.set_ylim(-100, -10)
-    ax.set_xlabel('Hydrogen consumption [kg]')
-    ax.set_ylabel('Total mechanical power of the motor [kW]')
+    ax.set_xlabel('Hydrogen consumption [kg]', fontsize=15)
+    ax.set_ylabel('Total mechanical power of the motor [kW]', fontsize=15)
 
     plt.savefig(fname=f'../Images/{algorithm}_2dfamily.png')
 
 
-al = 'pimia'
-# plot3d(al)
-# plot2d(al)
+al = ['pimia', 'imia', 'sms', 'nsga3', 'moead']
+
+for a in al:
+    plot3d(a)
+    plot2d(a)
